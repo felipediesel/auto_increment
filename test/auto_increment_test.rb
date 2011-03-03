@@ -49,4 +49,11 @@ class AutoIncrementActiveRecordTest < ActiveRecord::TestCase
     assert_equal 'AB', @user5.letter_code
   end
 
+  test "should not set code if is already set" do
+    account = Account.new :name => 'My Second Account', :code => 50
+    account.save
+
+    assert_equal account.code, 50
+  end
+
 end

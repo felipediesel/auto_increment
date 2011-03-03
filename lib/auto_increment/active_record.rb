@@ -12,7 +12,7 @@ module AutoIncrement
     before_create "auto_increment_#{options[:column]}"
 
     define_method "auto_increment_#{options[:column]}" do
-
+      return if self.send(options[:column]).present? || self.send(options[:column]) == 0
       query = self.class.scoped
       options[:scope].each do |scope|
         if scope.present? and respond_to?(scope)
