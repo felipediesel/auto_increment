@@ -41,19 +41,26 @@ class AutoIncrementActiveRecordTest < ActiveRecord::TestCase
     assert_equal 'A', @user_account2.letter_code
   end
 
-  test "checks if Z increments to AA" do
+  test "Z increments to AA" do
     assert_equal 'AA', @user4.letter_code
   end
 
-  test "checks if AA increments to AB" do
+  test "AA increments to AB" do
     assert_equal 'AB', @user5.letter_code
   end
 
-  test "should not set code if is already set" do
-    account = Account.new :name => 'My Second Account', :code => 50
+  test "not set column if is already set" do
+    account = Account.new :name => 'Another Account', :code => 50
     account.save
 
     assert_equal account.code, 50
   end
 
+  test "set column if option force is used" do
+    User.destroy_all
+    user = User.new :name => 'Maria', :letter_code => 'Z'
+    user.save
+
+    assert_equal user.letter_code, 'A'
+  end
 end
