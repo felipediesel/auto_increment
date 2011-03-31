@@ -8,7 +8,7 @@ Gem::Specification.new do |s|
   s.platform    = Gem::Platform::RUBY
   s.authors     = ["Felipe Diesel"]
   s.email       = ["felipediesel@gmail.com"]
-  s.homepage    = "http://felipediesel.com"
+  s.homepage    = "http://github.com/felipediesel/auto_increment"
   s.summary     = %q{Auto increment a string or integer field}
   s.description = %q{Automaticaly increments a string or integer field in ActiveRecord.}
 
