@@ -4,19 +4,22 @@ module AutoIncrement
   def auto_increment(options = {})
     raise ArgumentError, "Hash expected, got #{options.class.name}" if not options.is_a?(Hash) and not options.empty?
 
-    default_options = { :column => :code, :scope => nil, :initial => 1, :force => false }
-    options = default_options.merge(options) unless options.nil?
+    options.reverse_merge! column: :code, scope: nil, initial: 1, force: false
 
-    options[:scope] = [options[:scope]] if options[:scope].class != Array
+    options[:scope] = [ options[:scope] ] unless options[:scope].is_a? Array
 
-    before_create "auto_increment_#{options[:column]}"
+    method_name = "auto_increment_#{options[:column]}"
 
-    define_method "auto_increment_#{options[:column]}" do
-      return if self.send(options[:column]).present? and !options[:force]
-      query = self.class.scoped
+    before_create method_name
+
+    define_method method_name do
+      return if send(options[:column]).present? and !options[:force]
+
+      query = self.class.all
+
       options[:scope].each do |scope|
         if scope.present? and respond_to?(scope)
-          query = query.where "#{scope} = ?", send(scope)
+          query = query.where(scope => send(scope))
         end
       end
 
