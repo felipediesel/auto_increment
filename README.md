@@ -1,20 +1,21 @@
-auto_increment
-==============
+# auto_increment
 
-auto_increment provides automatic incrementation for a string or integer fields in Rails.
+[![Build Status](https://travis-ci.org/felipediesel/auto_increment.svg?branch=master)](https://travis-ci.org/felipediesel/auto_increment)
+[![Coverage Status](https://coveralls.io/repos/felipediesel/auto_increment/badge.svg?branch=master)](https://coveralls.io/r/felipediesel/auto_increment?branch=master)
+[![Code Climate](https://codeclimate.com/github/felipediesel/auto_increment/badges/gpa.svg)](https://codeclimate.com/github/felipediesel/auto_increment)
 
-Installation
-------------
+auto_increment provides automatic incrementation for a integer or string fields in Rails.
 
-You can use auto_increment as a gem in Rails 3.
+## Installation
+
+You can use auto_increment as a gem in Rails 4.
 
 To use the gem version, put the following gem requirement in your `Gemfile`:
 
     gem "auto_increment"
 
 
-Usage
------
+## Usage
 
 To work with a auto increment column you used to do sometihng like this in your model:
 
@@ -33,11 +34,11 @@ All you need to do is this:
 And your code field will be incremented
 
 
-### Customizing
+## Customizing
 
 So you have a different column or need a scope. auto_increment provides options. You can use it like this:
 
-    auto_increment :column => :letter, :scope => [:account_id, :job_id], :initial => 'C', :force => true
+    auto_increment column: :letter, scope: [:account_id, :job_id], initial: 'C', force: true
 
 * column: the column that will be incremented. Can be integer os string (default: code)
 * scope: you can define columns that will be scoped and you can use as many as you want (default: nil)
@@ -45,9 +46,10 @@ So you have a different column or need a scope. auto_increment provides options.
 * force: you can set a value before create and auto_increment will not change that, but if you do want this, set force to true (default: false)
 
 
-### Compatibility
+## Compatibility
 
-* Tested with Rails 3.0.4 in Ruby 1.8.7 and Ruby 1.9.2
+Tested with Rails 4.0.13 in Ruby 2.0.0
 
-### License
+## License
+
 MIT License. Copyright 2011 29sul Tecnologia da Informação <http://www.29sul.com.br/>
