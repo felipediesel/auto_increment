@@ -9,6 +9,3 @@ module AutoIncrement
     end
   end
 end
-
-# Extend ActiveRecord's functionality
-ActiveRecord::Base.send :extend, AutoIncrement
