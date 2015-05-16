@@ -16,15 +16,15 @@ describe AutoIncrement do
     it { expect(@user_account1.letter_code).to eq 'A' }
   end
 
-  describe "do not increment outside scope" do
+  describe 'do not increment outside scope' do
     it { expect(@user_account2.letter_code).to eq 'A' }
   end
 
-  describe "not set column if is already set" do
+  describe 'not set column if is already set' do
     it { expect(@account2.code).to eq 50 }
   end
 
-  describe "set column if option force is used" do
+  describe 'set column if option force is used' do
     it { expect(@user_account1.letter_code).to eq 'A' }
   end
 end
