@@ -34,9 +34,11 @@ module AutoIncrement
       query = build_scopes @record.class
 
       if @options[:initial].class == String
-        query.select("#{@options[:column]} max").order("LENGTH(#{@options[:column]}) DESC, #{@options[:column]} DESC").first.try :max
+        query.lock.select("#{@options[:column]} max")
+        .order("LENGTH(#{@options[:column]}) DESC, #{@options[:column]} DESC")
+        .first.try :max
       else
-        query.maximum @options[:column]
+        query.lock.maximum @options[:column]
       end
     end
 
