@@ -37,14 +37,19 @@ module AutoIncrement
 
     def maximum
       query = build_scopes @record.class
+      query.lock if lock?
 
       if string?
-        query.lock.select("#{@options[:column]} max")
+        query.select("#{@options[:column]} max")
           .order("LENGTH(#{@options[:column]}) DESC, #{@options[:column]} DESC")
           .first.try :max
       else
-        query.lock.maximum @options[:column]
+        query.maximum @options[:column]
       end
+    end
+
+    def lock?
+      @options[:lock] == true
     end
 
     def increment

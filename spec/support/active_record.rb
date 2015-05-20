@@ -1,7 +1,7 @@
 # +ActiveRecord+ migration for Accounts
 ActiveRecord::Migration.create_table :accounts do |t|
   t.string :name
-  t.date :code
+  t.integer :code
 end
 
 # +ActiveRecord+ migration for Users
