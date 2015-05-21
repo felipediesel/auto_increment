@@ -32,25 +32,25 @@ describe AutoIncrement do
     before :all do
       threads = []
       lock = Mutex.new
-      @account2 = Account.create name: 'Another Account', code: 50
+      @account = Account.create name: 'Another Account', code: 50
       @accounts = []
       5.times do |_t|
         threads << Thread.new do
           lock.synchronize do
-            @account2 = Account.create name: 'Another Account', code: 50
             5.times do |_thr|
-              @accounts << (@account2.users.create name: 'Daniel')
+              @accounts << (@account.users.create name: 'Daniel')
             end
           end
         end
       end
       threads.each(&:join)
     end
+
     let(:account_last_letter_code) do
       @accounts.sort_by(&:letter_code).last.letter_code
     end
 
     it { expect(@accounts.size).to eq 25 }
-    it { expect(account_last_letter_code).to eq 'E' }
+    it { expect(account_last_letter_code).to eq 'Y' }
   end
 end

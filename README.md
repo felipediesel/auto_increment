@@ -44,7 +44,7 @@ So you have a different column or need a scope. auto_increment provides options.
 * scope: you can define columns that will be scoped and you can use as many as you want (default: nil)
 * initial: initial value of column (default: 1)
 * force: you can set a value before create and auto_increment will not change that, but if you do want this, set force to true (default: false)
-* lock: you can set a lock on the max query. (default: nil)
+* lock: you can set a lock on the max query. (default: false)
 
 
 ## Compatibility
