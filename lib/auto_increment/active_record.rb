@@ -5,8 +5,8 @@ module AutoIncrement
     extend ActiveSupport::Concern
     # +AutoIncrement::ActiveRecord::ClassMethods+
     module ClassMethods
-      def auto_increment(options = {})
-        before_create Incrementor.new(options)
+      def auto_increment(column = nil, options = {})
+        before_create Incrementor.new(column, options)
       end
     end
   end

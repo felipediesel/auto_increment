@@ -29,7 +29,7 @@ Looks fine, but not when you need to do it over and over again. In fact auto_inc
 
 All you need to do is this:
 
-    auto_increment
+    auto_increment :code
 
 And your code field will be incremented
 
@@ -38,9 +38,10 @@ And your code field will be incremented
 
 So you have a different column or need a scope. auto_increment provides options. You can use it like this:
 
-    auto_increment column: :letter, scope: [:account_id, :job_id], initial: 'C', force: true, lock: false
+    auto_increment :letter, scope: [:account_id, :job_id], initial: 'C', force: true, lock: false
 
-* column: the column that will be incremented. Can be integer os string (default: code)
+First argument is the column that will be incremented. Can be integer or string.
+
 * scope: you can define columns that will be scoped and you can use as many as you want (default: nil)
 * initial: initial value of column (default: 1)
 * force: you can set a value before create and auto_increment will not change that, but if you do want this, set force to true (default: false)

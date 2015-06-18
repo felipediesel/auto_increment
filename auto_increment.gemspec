@@ -11,7 +11,8 @@ Gem::Specification.new do |spec|
   spec.email       = ['felipediesel@gmail.com']
   spec.homepage    = 'http://github.com/felipediesel/auto_increment'
   spec.summary     = 'Auto increment a string or integer field'
-  spec.description = 'Automaticaly increments a string or integer field in ActiveRecord.'
+  spec.description = 'Automaticaly increments a string or integer field ' \
+                     'in ActiveRecord.'
 
   spec.rubyforge_project = 'auto_increment'
 

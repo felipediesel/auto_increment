@@ -2,11 +2,14 @@
 module AutoIncrement
   # +AutoIncrement::Incrementor+
   class Incrementor
-    def initialize(options = {})
-      @options = options.reverse_merge column: :code,
-                                       scope: nil,
-                                       initial: 1,
-                                       force: false
+    def initialize(column = nil, options = {})
+      if column.is_a? Hash
+        options = column
+        column = nil
+      end
+
+      @column = column || options[:column] || :code
+      @options = options.reverse_merge scope: nil, initial: 1, force: false
       @options[:scope] = [@options[:scope]] unless @options[:scope].is_a? Array
     end
 
@@ -18,11 +21,11 @@ module AutoIncrement
     private
 
     def can_write?
-      @record.send(@options[:column]).blank? || @options[:force]
+      @record.send(@column).blank? || @options[:force]
     end
 
     def write
-      @record.send :write_attribute, @options[:column], increment
+      @record.send :write_attribute, @column, increment
     end
 
     def build_scopes(query)
@@ -40,11 +43,11 @@ module AutoIncrement
       query.lock if lock?
 
       if string?
-        query.select("#{@options[:column]} max")
-          .order("LENGTH(#{@options[:column]}) DESC, #{@options[:column]} DESC")
+        query.select("#{@column} max")
+          .order("LENGTH(#{@column}) DESC, #{@column} DESC")
           .first.try :max
       else
-        query.maximum @options[:column]
+        query.maximum @column
       end
     end
 
