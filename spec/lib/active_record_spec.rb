@@ -16,15 +16,41 @@ describe AutoIncrement do
     it { expect(@user_account1.letter_code).to eq 'A' }
   end
 
-  describe "do not increment outside scope" do
+  describe 'do not increment outside scope' do
     it { expect(@user_account2.letter_code).to eq 'A' }
   end
 
-  describe "not set column if is already set" do
+  describe 'not set column if is already set' do
     it { expect(@account2.code).to eq 50 }
   end
 
-  describe "set column if option force is used" do
+  describe 'set column if option force is used' do
     it { expect(@user_account1.letter_code).to eq 'A' }
+  end
+
+  describe 'locks query for increment' do
+    before :all do
+      threads = []
+      lock = Mutex.new
+      @account = Account.create name: 'Another Account', code: 50
+      @accounts = []
+      5.times do |_t|
+        threads << Thread.new do
+          lock.synchronize do
+            5.times do |_thr|
+              @accounts << (@account.users.create name: 'Daniel')
+            end
+          end
+        end
+      end
+      threads.each(&:join)
+    end
+
+    let(:account_last_letter_code) do
+      @accounts.sort_by(&:letter_code).last.letter_code
+    end
+
+    it { expect(@accounts.size).to eq 25 }
+    it { expect(account_last_letter_code).to eq 'Y' }
   end
 end
