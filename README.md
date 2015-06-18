@@ -50,7 +50,7 @@ First argument is the column that will be incremented. Can be integer or string.
 
 ## Compatibility
 
-Tested with Rails 4.0.13 in Ruby 2.0.0
+Tested with Rails 4.2.2 in Ruby 2.0.0
 
 ## License
 
