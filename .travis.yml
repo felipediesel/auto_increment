@@ -1,8 +1,12 @@
 language: ruby
+sudo: false
 cache: bundler
-
 rvm:
-  - 2.0.0
+  - 2.3.1
+  - 2.2.5
+gemfile:
+  - gemfiles/rails_5.gemfile
+  - gemfiles/rails_4.gemfile
 
 script: 'bundle exec rake'
 
