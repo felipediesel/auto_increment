@@ -9,11 +9,3 @@ gemfile:
   - gemfiles/rails_4.gemfile
 
 script: 'bundle exec rake'
-
-notifications:
-  email:
-    recipients:
-      - felipe@29sul.com.br
-      - elton@29sul.com.br
-    on_failure: change # [always|never|change]
-    on_success: change # [always|never|change]
