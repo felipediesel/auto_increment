@@ -8,7 +8,7 @@ auto_increment provides automatic incrementation for a integer or string fields 
 
 ## Installation
 
-You can use auto_increment as a gem in Rails 4.
+You can use auto_increment as a gem in Rails 4 and Rails 5.
 
 To use the gem version, put the following gem requirement in your `Gemfile`:
 
@@ -50,7 +50,7 @@ First argument is the column that will be incremented. Can be integer or string.
 
 ## Compatibility
 
-Tested with Rails 4.2.2 in Ruby 2.0.0
+Tested with Rails 4 and Rails 5 in Ruby 2.2.5 and Ruby 2.3.1
 
 ## License
 
