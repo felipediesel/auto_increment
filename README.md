@@ -12,24 +12,29 @@ You can use auto_increment as a gem in Rails 4 and Rails 5.
 
 To use the gem version, put the following gem requirement in your `Gemfile`:
 
-    gem "auto_increment"
-
+```ruby
+gem "auto_increment"
+```
 
 ## Usage
 
 To work with a auto increment column you used to do something like this in your model:
 
-    before_create :set_code
-    def set_code
-      max_code = Operation.maximum(:code)
-      self.code = max_code.to_i + 1
-    end
+```ruby
+before_create :set_code
+def set_code
+  max_code = Operation.maximum(:code)
+  self.code = max_code.to_i + 1
+end
+```
 
 Looks fine, but not when you need to do it over and over again. In fact auto_increment does it under the cover.
 
 All you need to do is this:
 
-    auto_increment :code
+```ruby
+auto_increment :code
+```
 
 And your code field will be incremented
 
@@ -37,16 +42,16 @@ And your code field will be incremented
 ## Customizing
 
 So you have a different column or need a scope. auto_increment provides options. You can use it like this:
-
-    auto_increment :letter, scope: [:account_id, :job_id], initial: 'C', force: true, lock: false, on: :save
-
+```ruby
+auto_increment :letter, scope: [:account_id, :job_id], initial: 'C', force: true, lock: false, on: :save
+```
 First argument is the column that will be incremented. Can be integer or string.
 
-* scope: you can define columns that will be scoped and you can use as many as you want (default: nil)
-* initial: initial value of column (default: 1)
-* force: you can set a value before create and auto_increment will not change that, but if you do want this, set force to true (default: false)
-* lock: you can set a lock on the max query. (default: false)
-* on: moment to auto increment value, can be `:save` or `:create` (default: `:create`)
+* `scope`: you can define columns that will be scoped and you can use as many as you want (default: nil)
+* `initial`: initial value of column (default: 1)
+* `force`: you can set a value before create and auto_increment will not change that, but if you do want this, set force to true (default: false)
+* `lock`: you can set a lock on the max query. (default: false)
+* `on`: moment to auto increment value, can be `:save` or `:create` (default: `:create`)
 
 
 ## Compatibility
