@@ -9,11 +9,12 @@ module AutoIncrement
       end
 
       @column = column || options[:column] || :code
-      @options = options.reverse_merge scope: nil, initial: 1, force: false
+      @options = options.reverse_merge scope: nil, initial: 1, force: false, on: :create
       @options[:scope] = [@options[:scope]] unless @options[:scope].is_a? Array
+      @options[:on] = :create unless [:create, :save].include?(@options[:on])
     end
 
-    def before_create(record)
+    def before_save(record)
       @record = record
       write if can_write?
     end
@@ -21,7 +22,8 @@ module AutoIncrement
     private
 
     def can_write?
-      @record.send(@column).blank? || @options[:force]
+      return false if @options[:on] == :create && @record.persisted?
+      return @record.send(@column).blank? || @options[:force]
     end
 
     def write
