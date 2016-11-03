@@ -6,7 +6,11 @@ module AutoIncrement
     # +AutoIncrement::ActiveRecord::ClassMethods+
     module ClassMethods
       def auto_increment(column = nil, options = {})
-        before_create Incrementor.new(column, options)
+        options.reverse_merge! before: :create
+
+        callback = "before_#{ options[:before]}"
+
+        self.send callback, Incrementor.new(column, options)
       end
     end
   end

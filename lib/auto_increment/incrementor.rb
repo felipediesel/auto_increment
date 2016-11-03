@@ -18,6 +18,9 @@ module AutoIncrement
       write if can_write?
     end
 
+    alias_method :before_validation, :before_create
+    alias_method :before_save, :before_create
+
     private
 
     def can_write?
