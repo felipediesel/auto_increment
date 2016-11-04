@@ -38,7 +38,7 @@ And your code field will be incremented
 
 So you have a different column or need a scope. auto_increment provides options. You can use it like this:
 
-    auto_increment :letter, scope: [:account_id, :job_id], initial: 'C', force: true, lock: false
+    auto_increment :letter, scope: [:account_id, :job_id], initial: 'C', force: true, lock: false, before: :create
 
 First argument is the column that will be incremented. Can be integer or string.
 
@@ -46,6 +46,7 @@ First argument is the column that will be incremented. Can be integer or string.
 * initial: initial value of column (default: 1)
 * force: you can set a value before create and auto_increment will not change that, but if you do want this, set force to true (default: false)
 * lock: you can set a lock on the max query. (default: false)
+* before: you can choose a different callback to be used (:create, :save, :validation) (default: create)
 
 
 ## Compatibility
