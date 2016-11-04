@@ -54,12 +54,10 @@ describe AutoIncrement do
     it { expect(account_last_letter_code).to eq 'Y' }
   end
 
-
   describe 'set before validation' do
     account3 = Account.new
     account3.valid?
 
     it { expect(account3.code).not_to be_nil }
   end
-
 end

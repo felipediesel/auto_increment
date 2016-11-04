@@ -18,8 +18,8 @@ module AutoIncrement
       write if can_write?
     end
 
-    alias_method :before_validation, :before_create
-    alias_method :before_save, :before_create
+    alias before_validation before_create
+    alias before_save before_create
 
     private
 
@@ -47,8 +47,8 @@ module AutoIncrement
 
       if string?
         query.select("#{@column} max")
-          .order("LENGTH(#{@column}) DESC, #{@column} DESC")
-          .first.try :max
+             .order("LENGTH(#{@column}) DESC, #{@column} DESC")
+             .first.try :max
       else
         query.maximum @column
       end
