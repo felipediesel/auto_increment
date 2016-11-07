@@ -1,4 +1,4 @@
 # +AutoIncrement::VERSION+
 module AutoIncrement
-  VERSION = '1.4.0'
+  VERSION = '1.4.0'.freeze
 end
