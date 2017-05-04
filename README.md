@@ -51,8 +51,8 @@ First argument is the column that will be incremented. Can be integer or string.
 
 ## Compatibility
 
-Tested with Rails 4 and Rails 5 in Ruby 2.2.5 and Ruby 2.3.1
+Tested with Rails 4, Rails 5 and Rails 5.1 in Ruby 2.2.5 and Ruby 2.3.1
 
 ## License
 
-MIT License. Copyright 2011 29sul Tecnologia da Informação <http://www.29sul.com.br/>
+MIT License
