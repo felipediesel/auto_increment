@@ -1,14 +1,14 @@
-appraise 'rails-4' do
-  gem 'activerecord', '~> 4.0'
-  gem 'activesupport', '~> 4.0'
-end
+RAILS_VERSIONS = %w(
+  4.0.13
+  4.1.15
+  4.2.8
+  5.0.2
+  5.1.0
+)
 
-appraise 'rails-5' do
-  gem 'activerecord', '~> 5.0'
-  gem 'activesupport', '~> 5.0'
-end
-
-appraise 'rails-5.1' do
-  gem 'activerecord', '~> 5.1'
-  gem 'activesupport', '~> 5.1'
+RAILS_VERSIONS.each do |version|
+  appraise "rails_#{version}" do
+    gem 'activerecord', version
+    gem 'activesupport', version
+  end
 end
