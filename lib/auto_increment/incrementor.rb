@@ -65,7 +65,7 @@ module AutoIncrement
     end
 
     def string?
-      @options[:initial].class == String
+      @record.class.column_for_attribute(@column.to_sym).type == :string 
     end
   end
 end
