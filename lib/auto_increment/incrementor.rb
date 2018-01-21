@@ -47,7 +47,7 @@ module AutoIncrement
 
       if string?
         query.select("#{@column} max")
-             .order("LENGTH(#{@column}) DESC, #{@column} DESC")
+             .order(Arel.sql("LENGTH(#{@column}) DESC, #{@column} DESC"))
              .first.try :max
       else
         query.maximum @column
