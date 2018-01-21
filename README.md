@@ -38,11 +38,12 @@ And your code field will be incremented
 
 So you have a different column or need a scope. auto_increment provides options. You can use it like this:
 
-    auto_increment :letter, scope: [:account_id, :job_id], initial: 'C', force: true, lock: false, before: :create
+    auto_increment :letter, scope: [:account_id, :job_id], model_scope: :in_account, initial: 'C', force: true, lock: false, before: :create
 
 First argument is the column that will be incremented. Can be integer or string.
 
 * scope: you can define columns that will be scoped and you can use as many as you want (default: nil)
+* model_scope: you can define model scopes that will be executed and you can use as many as you want (default: nil)
 * initial: initial value of column (default: 1)
 * force: you can set a value before create and auto_increment will not change that, but if you do want this, set force to true (default: false)
 * lock: you can set a lock on the max query. (default: false)
