@@ -7,17 +7,19 @@ describe AutoIncrement do
     @account1 = Account.create name: 'My Account'
     @account2 = Account.create name: 'Another Account', code: 50
 
-    @user_account1 = @account1.users.create name: 'Felipe', letter_code: 'Z'
-    @user_account2 = @account2.users.create name: 'Daniel'
+    @user1_account1 = @account1.users.create name: 'Felipe', letter_code: 'Z'
+    @user1_account2 = @account2.users.create name: 'Daniel'
+    @user2_account2 = @account2.users.create name: 'Mark'
+    @user3_account2 = @account2.users.create name: 'Robert'
   end
 
   describe 'initial' do
     it { expect(@account1.code).to eq 1 }
-    it { expect(@user_account1.letter_code).to eq 'A' }
+    it { expect(@user1_account1.letter_code).to eq 'A' }
   end
 
   describe 'do not increment outside scope' do
-    it { expect(@user_account2.letter_code).to eq 'A' }
+    it { expect(@user1_account2.letter_code).to eq 'A' }
   end
 
   describe 'not set column if is already set' do
@@ -25,7 +27,7 @@ describe AutoIncrement do
   end
 
   describe 'set column if option force is used' do
-    it { expect(@user_account1.letter_code).to eq 'A' }
+    it { expect(@user1_account1.letter_code).to eq 'A' }
   end
 
   describe 'locks query for increment' do
@@ -59,5 +61,9 @@ describe AutoIncrement do
     account3.valid?
 
     it { expect(account3.code).not_to be_nil }
+  end
+
+  describe 'uses model scopes' do
+    it { expect(@user3_account2.letter_code).to eq('C') }
   end
 end

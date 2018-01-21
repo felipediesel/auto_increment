@@ -11,6 +11,7 @@ module AutoIncrement
       @column = column || options[:column] || :code
       @options = options.reverse_merge scope: nil, initial: 1, force: false
       @options[:scope] = [@options[:scope]] unless @options[:scope].is_a? Array
+      @options[:model_scopes] = [@options[:model_scopes]] unless @options[:model_scopes].is_a? Array
     end
 
     def before_create(record)
@@ -41,8 +42,16 @@ module AutoIncrement
       query
     end
 
+    def build_model_scopes(query)
+      @options[:model_scopes].reject(&:nil?).each do |scope|
+        query = query.send(scope)
+      end
+
+      query
+    end
+
     def maximum
-      query = build_scopes @record.class
+      query = build_scopes(build_model_scopes(@record.class))
       query.lock if lock?
 
       if string?
