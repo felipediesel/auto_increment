@@ -51,15 +51,17 @@ module AutoIncrement
     end
 
     def maximum
-      query = build_scopes(build_model_scope(@record.class))
-      query.lock if lock?
+      @record.class.transaction do
+        query = build_scopes(build_model_scope(@record.class))
+        query.lock if lock?
 
-      if string?
-        query.select("#{@column} max")
-             .order(Arel.sql("LENGTH(#{@column}) DESC, #{@column} DESC"))
-             .first.try :max
-      else
-        query.maximum @column
+        if string?
+          query.select("#{@column} max")
+               .order(Arel.sql("LENGTH(#{@column}) DESC, #{@column} DESC"))
+               .first.try :max
+        else
+          query.maximum @column
+        end
       end
     end
 
