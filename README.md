@@ -42,13 +42,37 @@ So you have a different column or need a scope. auto_increment provides options.
 
 First argument is the column that will be incremented. Can be integer or string.
 
+* **Scope by columns and model:**
 * scope: you can define columns that will be scoped and you can use as many as you want (default: nil)
 * model_scope: you can define model scopes that will be executed and you can use as many as you want (default: nil)
+* **Scope by related model:**
+* scope_by_related_model: you can define model scope by related model
+* **Common options:**
 * initial: initial value of column (default: 1)
 * force: you can set a value before create and auto_increment will not change that, but if you do want this, set force to true (default: false)
 * lock: you can set a lock on the max query. (default: false)
 * before: you can choose a different callback to be used (:create, :save, :validation) (default: create)
 
+### Example of auto increment by related model scope
+
+```ruby
+class User < ApplicationRecord
+  belongs_to :department
+  belongs_to :organization, through: :department
+  
+  auto_increment :in_organization_id, scope_by_related_model: :organization
+end
+
+class Department < ApplicationRecord
+  has_many :users
+  belongs_to :organization
+end
+
+class Organization < ApplicationRecord
+  has_many :departments
+  has_many :users, through: :departments
+end
+```
 
 ## Compatibility
 

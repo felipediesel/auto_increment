@@ -32,6 +32,30 @@ module AutoIncrement
       @record.send :write_attribute, @column, increment
     end
 
+    def increment
+      max = maximum
+
+      max.blank? ? @options[:initial] : max.next
+    end
+
+    def maximum
+      if @options[:scope_by_related_model]
+        records = records_by_related_model
+      else
+        records = build_scopes(build_model_scope(@record.class))
+      end
+
+      records.lock if lock?
+
+      if initial_class_string?
+        records.select("#{@column} max")
+        .order(Arel.sql("LENGTH(#{@column}) DESC, #{@column} DESC"))
+        .first.try :max
+      else
+        records.maximum @column
+      end
+    end
+
     def build_scopes(query)
       @options[:scope].each do |scope|
         if scope.present? && @record.respond_to?(scope)
@@ -50,30 +74,16 @@ module AutoIncrement
       query
     end
 
-    def maximum
-      query = build_scopes(build_model_scope(@record.class))
-      query.lock if lock?
-
-      if string?
-        query.select("#{@column} max")
-             .order(Arel.sql("LENGTH(#{@column}) DESC, #{@column} DESC"))
-             .first.try :max
-      else
-        query.maximum @column
-      end
+    def records_by_related_model
+      related_model = @record.send @options[:scope_by_related_model]
+      related_model.send @record.class.name.downcase.pluralize
     end
 
     def lock?
       @options[:lock] == true
     end
 
-    def increment
-      max = maximum
-
-      max.blank? ? @options[:initial] : max.next
-    end
-
-    def string?
+    def initial_class_string?
       @options[:initial].class == String
     end
   end
