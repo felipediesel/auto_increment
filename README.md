@@ -56,22 +56,43 @@ First argument is the column that will be incremented. Can be integer or string.
 ### Example of auto increment by related model scope
 
 ```ruby
-class User < ApplicationRecord
-  belongs_to :department
-  belongs_to :organization, through: :department
-  
-  auto_increment :in_organization_id, scope_by_related_model: :organization
-end
-
-class Department < ApplicationRecord
-  has_many :users
-  belongs_to :organization
-end
-
-class Organization < ApplicationRecord
+class Organization < ActiveRecord::Base
   has_many :departments
-  has_many :users, through: :departments
+  has_many :workers, through: :departments
 end
+
+class Department < ActiveRecord::Base
+  has_many :workers
+  belongs_to :organization
+
+  auto_increment :code_in_organization, scope_by_related_model: :organization
+end
+
+class Worker < ActiveRecord::Base
+  belongs_to :department
+  delegate :organization, to: :department
+
+  auto_increment :code_in_department, scope_by_related_model: :department
+  auto_increment :code_in_organization, scope_by_related_model: :organization
+end
+
+# Create Organization
+@robarin = Organization.create name: 'Robarin'
+
+# Create Department
+@soft_dev = @robarin.departments.create name: 'SoftDev' # code_in_organization: 1
+
+# Create Department Workers
+@soft_dev.workers.create name: 'Igor'       # code_in_organization: 1, code_in_department: 1
+@soft_dev.workers.create name: 'Dima'       # code_in_organization: 2, code_in_department: 2
+@soft_dev.workers.create name: 'Sergey'     # code_in_organization: 3, code_in_department: 3
+
+# Create another Department
+@dev_school = @robarin.departments.create name: 'DevSchool' # code_in_organization: 2
+
+# Create another Department Workers
+@dev_school.workers.create name: 'Igor'     # code_in_organization: 4, code_in_department: 1
+@dev_school.workers.create name: 'Azamat'   # code_in_organization: 5, code_in_department: 2
 ```
 
 ## Compatibility
