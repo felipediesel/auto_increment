@@ -4,7 +4,7 @@ module AutoIncrement
   module ActiveRecord
     extend ActiveSupport::Concern
     # +AutoIncrement::ActiveRecord::ClassMethods+
-    module ClassMethods
+    class_methods do
       def auto_increment(column = nil, options = {})
         options.reverse_merge! before: :create
 
