@@ -52,8 +52,8 @@ First argument is the column that will be incremented. Can be integer or string.
 
 ## Compatibility
 
-Tested with Rails 4.2, 5, 5.1 and 5.2-beta2 in Ruby 2.4.3 and 2.5.0.
+Tested with Rails 4.2.11.1, 5.0.7.2, 5.1.6.2, 5.2.2.1, and 6.0.0.beta3 in Ruby 2.5.4 and 2.6.2
 
 ## License
 
-MIT License
+[MIT License](LICENSE.txt)
