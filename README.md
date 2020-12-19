@@ -8,37 +8,43 @@ auto_increment provides automatic incrementation for a integer or string fields 
 
 ## Installation
 
-You can use auto_increment as a gem from Rails 4.2 to Rails 5.2-beta2.
+You can use auto_increment as a gem from Rails 4.2 to Rails 6.1.
 
 To use the gem version, put the following gem requirement in your `Gemfile`:
 
-    gem "auto_increment"
-
+```rb
+gem "auto_increment"
+```
 
 ## Usage
 
 To work with a auto increment column you used to do something like this in your model:
 
-    before_create :set_code
-    def set_code
-      max_code = Operation.maximum(:code)
-      self.code = max_code.to_i + 1
-    end
+```rb
+before_create :set_code
+def set_code
+  max_code = Operation.maximum(:code)
+  self.code = max_code.to_i + 1
+end
+```
 
 Looks fine, but not when you need to do it over and over again. In fact auto_increment does it under the cover.
 
 All you need to do is this:
 
-    auto_increment :code
+```rb
+auto_increment :code
+```
 
 And your code field will be incremented
-
 
 ## Customizing
 
 So you have a different column or need a scope. auto_increment provides options. You can use it like this:
 
-    auto_increment :letter, scope: [:account_id, :job_id], model_scope: :in_account, initial: 'C', force: true, lock: false, before: :create
+```rb
+auto_increment :letter, scope: [:account_id, :job_id], model_scope: :in_account, initial: 'C', force: true, lock: false, before: :create
+```
 
 First argument is the column that will be incremented. Can be integer or string.
 
@@ -52,7 +58,7 @@ First argument is the column that will be incremented. Can be integer or string.
 
 ## Compatibility
 
-Tested with Rails 4.2.11.1, 5.0.7.2, 5.1.6.2, 5.2.2.1, and 6.0.0.beta3 in Ruby 2.5.4 and 2.6.2
+Tested with Rails 6.1.0, 6.0.3.4, 5.2.2.1, 5.1.6.2, 5.0.7.2 and 4.2.11.1 in Ruby 2.6.6.
 
 ## License
 
