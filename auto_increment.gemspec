@@ -8,7 +8,7 @@ Gem::Specification.new do |s|
   s.licenses    = 'MIT'
   s.platform    = Gem::Platform::RUBY
   s.authors     = ['Felipe Diesel']
-  s.email       = ['felipediesel@gmail.com']
+  s.email       = ['diesel@hey.com']
   s.homepage    = 'http://github.com/felipediesel/auto_increment'
   s.summary     = 'Auto increment a string or integer field'
   s.description = 'Automaticaly increments a string or integer field ' \
@@ -18,8 +18,8 @@ Gem::Specification.new do |s|
   s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
   s.require_paths = ['lib']
 
-  s.add_dependency 'activerecord', '>= 4.0', '< 6.1'
-  s.add_dependency 'activesupport', '>= 4.0', '< 6.1'
+  s.add_dependency 'activerecord', '>= 4.0'
+  s.add_dependency 'activesupport', '>= 4.0'
 
   s.add_development_dependency 'bundler'
   s.add_development_dependency 'rake'
@@ -33,5 +33,5 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'database_cleaner'
   s.add_development_dependency 'appraisal'
 
-  s.add_development_dependency 'sqlite3', '~> 1.3.13'
+  s.add_development_dependency 'sqlite3', '>= 1.3.13'
 end
