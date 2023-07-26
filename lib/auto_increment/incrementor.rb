@@ -44,7 +44,18 @@ module AutoIncrement
 
     def build_model_scope(query)
       @options[:model_scope].reject(&:nil?).each do |scope|
-        query = query.send(scope)
+        if scope.is_a? Hash
+          scp = scope[:scope]
+          arg = scope[:arg]
+        else
+          scp = scope
+        end
+
+        query = if arg.present?
+                  query.send(scp, arg)
+                else
+                  query.send(scp)
+                end
       end
 
       query

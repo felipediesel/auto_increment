@@ -55,6 +55,10 @@ First argument is the column that will be incremented. Can be integer or string.
 * lock: you can set a lock on the max query. (default: false)
 * before: you can choose a different callback to be used (:create, :save, :validation) (default: create)
 
+```rb
+auto_increment :letter, scope: [:account_id, :job_id], model_scope: {scope: :in_account, arg: account_id}, initial: 'C', force: true, lock: false, before: :create
+```
+* model_scope: you can define model scopes ( arguments scopes ) that will be executed and you can use as many as you want (default: nil)
 
 ## Compatibility
 
