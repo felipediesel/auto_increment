@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    auto_increment (1.5.2)
+    auto_increment (1.6.0)
       activerecord (>= 6.0)
       activesupport (>= 6.0)
 
