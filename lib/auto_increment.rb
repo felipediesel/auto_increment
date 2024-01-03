@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'date'
 require 'i18n'
 require 'active_record'
@@ -11,4 +13,4 @@ module AutoIncrement
   autoload :ActiveRecord, 'auto_increment/active_record'
 end
 
-ActiveRecord::Base.send :include, AutoIncrement::ActiveRecord
+ActiveRecord::Base.include AutoIncrement::ActiveRecord

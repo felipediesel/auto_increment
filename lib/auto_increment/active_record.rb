@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # +AutoIncrement+
 module AutoIncrement
   # +AutoIncrement::ActiveRecord+

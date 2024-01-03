@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # +AutoIncrement+
 module AutoIncrement
   # +AutoIncrement::Incrementor+
@@ -34,9 +36,7 @@ module AutoIncrement
 
     def build_scopes(query)
       @options[:scope].each do |scope|
-        if scope.present? && @record.respond_to?(scope)
-          query = query.where(scope => @record.send(scope))
-        end
+        query = query.where(scope => @record.send(scope)) if scope.present? && @record.respond_to?(scope)
       end
 
       query
@@ -74,7 +74,7 @@ module AutoIncrement
     end
 
     def string?
-      @options[:initial].class == String
+      @options[:initial].instance_of?(String)
     end
   end
 end

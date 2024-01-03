@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 require 'models/account'
 require 'models/user'
@@ -49,7 +51,7 @@ describe AutoIncrement do
     end
 
     let(:account_last_letter_code) do
-      @accounts.sort_by(&:letter_code).last.letter_code
+      @accounts.max_by(&:letter_code).letter_code
     end
 
     it { expect(@accounts.size).to eq 25 }
