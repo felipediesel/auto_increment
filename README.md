@@ -1,7 +1,6 @@
 # auto_increment
 
-[![Build Status](https://travis-ci.org/felipediesel/auto_increment.svg?branch=master)](https://travis-ci.org/felipediesel/auto_increment)
-[![Coverage Status](https://coveralls.io/repos/felipediesel/auto_increment/badge.svg?branch=master)](https://coveralls.io/r/felipediesel/auto_increment?branch=master)
+[![CircleCI](https://dl.circleci.com/status-badge/img/gh/felipediesel/auto_increment/tree/master.svg?style=svg)](https://dl.circleci.com/status-badge/redirect/gh/felipediesel/auto_increment/tree/master)
 [![Code Climate](https://codeclimate.com/github/felipediesel/auto_increment/badges/gpa.svg)](https://codeclimate.com/github/felipediesel/auto_increment)
 
 auto_increment provides automatic incrementation for a integer or string fields in Rails.
@@ -59,6 +58,8 @@ First argument is the column that will be incremented. Can be integer or string.
 
 Tested with Rails 6.1, 6 in Ruby 2.7.7.
 Tested with Rails 7.1, 7, 6.1, 6 in Ruby 3.2.2.
+
+For older versions, use version 1.5.2.
 
 ## License
 
