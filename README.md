@@ -48,17 +48,17 @@ auto_increment :letter, scope: [:account_id, :job_id], model_scope: :in_account,
 
 First argument is the column that will be incremented. Can be integer or string.
 
-* scope: you can define columns that will be scoped and you can use as many as you want (default: nil)
-* model_scope: you can define model scopes that will be executed and you can use as many as you want (default: nil)
-* initial: initial value of column (default: 1)
-* force: you can set a value before create and auto_increment will not change that, but if you do want this, set force to true (default: false)
-* lock: you can set a lock on the max query. (default: false)
-* before: you can choose a different callback to be used (:create, :save, :validation) (default: create)
-
+- scope: you can define columns that will be scoped and you can use as many as you want (default: nil)
+- model_scope: you can define model scopes that will be executed and you can use as many as you want (default: nil)
+- initial: initial value of column (default: 1)
+- force: you can set a value before create and auto_increment will not change that, but if you do want this, set force to true (default: false)
+- lock: you can set a lock on the max query. (default: false)
+- before: you can choose a different callback to be used (:create, :save, :validation) (default: create)
 
 ## Compatibility
 
-Tested with Rails 6.1.0, 6.0.3.4, 5.2.2.1, 5.1.6.2, 5.0.7.2 and 4.2.11.1 in Ruby 2.6.6.
+Tested with Rails 6.1, 6 in Ruby 2.7.7.
+Tested with Rails 7.1, 7, 6.1, 6 in Ruby 3.2.2.
 
 ## License
 

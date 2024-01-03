@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # +ActiveRecord+ migration for Accounts
 ActiveRecord::Migration.create_table :accounts do |t|
   t.string :name
