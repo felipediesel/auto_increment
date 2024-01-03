@@ -14,8 +14,6 @@ module AutoIncrement
       @options = options.reverse_merge initial: 1, force: false
       @options[:scope] = [@options[:scope]].compact unless @options[:scope].is_a?(Array)
       @options[:model_scope] = [@options[:model_scope]].compact unless @options[:model_scope].is_a?(Array)
-
-      deprecated_warning
     end
 
     def before_create(record)
@@ -77,14 +75,6 @@ module AutoIncrement
 
     def string?
       @options[:initial].instance_of?(String)
-    end
-
-    def deprecated_warning
-      return if @options[:scope].empty?
-
-      ActiveSupport::Deprecation.warn <<~WARNING.squish
-        Passing a scope to auto_increment is deprecated and will be removed in the next version. Please use model_scope instead.
-      WARNING
     end
   end
 end

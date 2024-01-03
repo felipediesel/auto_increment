@@ -30,23 +30,4 @@ describe AutoIncrement::Incrementor do
       expect(subject.send(:increment)).to eq 'A'
     end
   end
-
-  describe 'deprecates scope' do
-    subject { AutoIncrement::Incrementor.new :code, **options }
-    let(:options) { { scope: :account_id } }
-
-    it 'issues a deprecation warning' do
-      expect(ActiveSupport::Deprecation).to receive(:warn).with(/Passing a scope to auto_increment is deprecated/)
-      subject
-    end
-
-    context 'when @options[:scope] is not present' do
-      let(:options) { {} }
-
-      it 'does not issue a deprecation warning' do
-        expect(ActiveSupport::Deprecation).not_to receive(:warn)
-        subject
-      end
-    end
-  end
 end
