@@ -1,0 +1,62 @@
+---
+version: "2.1"
+
+commands:
+  shared_steps:
+    steps:
+      - checkout
+
+      # Install bundler
+      - run: gem install bundler:2.4.22
+
+      # Restore Cached Dependencies
+      - restore_cache:
+          name: Restore bundle cache
+          key: auto_increment-{{ checksum "Gemfile.lock" }}
+
+      # Bundle install dependencies
+      - run: bundle install --path vendor/bundle
+
+      # Cache Dependencies
+      - save_cache:
+          name: Store bundle cache
+          key: auto_increment-{{ checksum "Gemfile.lock" }}
+          paths:
+            - vendor/bundle
+
+default_job: &default_job
+  working_directory: ~/auto_increment
+
+jobs:
+  ruby-27:
+    <<: *default_job
+    steps:
+      - shared_steps
+      - run: bundle exec appraisal install
+      - run: bundle exec appraisal rails_6_0 rspec
+      - run: bundle exec appraisal rails_6_1 rspec
+    docker:
+      - image: cimg/ruby:2.7.7
+        environment:
+          RAILS_ENV: test
+
+  ruby-32:
+    <<: *default_job
+    steps:
+      - shared_steps
+      - run: bundle exec appraisal install
+      - run: bundle exec appraisal rails_6_0 rspec
+      - run: bundle exec appraisal rails_6_1 rspec
+      - run: bundle exec appraisal rails_7_0 rspec
+      - run: bundle exec appraisal rails_7_1 rspec
+    docker:
+      - image: cimg/ruby:3.2.2
+        environment:
+          RAILS_ENV: test
+
+workflows:
+  version: 2
+  build-test:
+    jobs:
+      - ruby-32
+      - ruby-27
