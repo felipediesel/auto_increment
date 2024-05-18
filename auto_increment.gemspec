@@ -15,7 +15,6 @@ Gem::Specification.new do |s|
   s.description = 'Automaticaly increments an ActiveRecord column'
 
   s.files         = `git ls-files`.split("\n")
-  s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
   s.require_paths = ['lib']
 
   s.add_dependency 'activerecord', '>= 6.0'
@@ -33,5 +32,6 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'rspec-nc'
   s.add_development_dependency 'rubocop'
 
-  s.add_development_dependency 'sqlite3', '>= 1.3.13'
+  s.add_development_dependency 'sqlite3', '~> 1.6.9'
+  s.metadata['rubygems_mfa_required'] = 'true'
 end
