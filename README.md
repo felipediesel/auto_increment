@@ -1,6 +1,7 @@
 # auto_increment
 
-[![CircleCI](https://dl.circleci.com/status-badge/img/gh/felipediesel/auto_increment/tree/master.svg?style=svg)](https://dl.circleci.com/status-badge/redirect/gh/felipediesel/auto_increment/tree/master)
+![CI status](https://github.com/felipediesel/auto_increment/actions/workflows/ci.yml/badge.svg?branch=main)
+
 [![Code Climate](https://codeclimate.com/github/felipediesel/auto_increment/badges/gpa.svg)](https://codeclimate.com/github/felipediesel/auto_increment)
 
 auto_increment provides automatic incrementation for a integer or string fields in Rails.
