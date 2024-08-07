@@ -2,6 +2,8 @@
 
 require 'spec_helper'
 require 'models/account'
+require 'models/invoice'
+require 'models/ticket'
 require 'models/user'
 
 describe AutoIncrement do
@@ -13,11 +15,16 @@ describe AutoIncrement do
     @user1_account2 = @account2.users.create name: 'Daniel'
     @user2_account2 = @account2.users.create name: 'Mark'
     @user3_account2 = @account2.users.create name: 'Robert'
+
+    @invoice = Invoice.create user: @user1_account1
+    @ticket = Ticket.create
   end
 
   describe 'initial' do
     it { expect(@account1.code).to eq 1 }
     it { expect(@user1_account1.letter_code).to eq 'A' }
+    it { expect(@invoice.reference).to eq "A-#{@user1_account1.id}-001" }
+    it { expect(@ticket.serial).to eq "T-1000" }
   end
 
   describe 'do not increment outside scope' do
