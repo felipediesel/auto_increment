@@ -70,11 +70,25 @@ module AutoIncrement
     def increment
       max = maximum
 
-      max.blank? ? @options[:initial] : max.next
+      max.blank? ? initial : max.next
     end
 
     def string?
-      @options[:initial].instance_of?(String)
+      initial.instance_of?(String)
+    end
+
+    def initial
+      @initial ||= calculate_initial
+    end
+
+    def calculate_initial
+      if @options[:initial].respond_to?(:call)
+        @record.instance_exec(&@options[:initial])
+      elsif @options[:initial].is_a?(Symbol)
+        @record.send(@options[:initial])
+      else
+        @options[:initial]
+      end
     end
   end
 end

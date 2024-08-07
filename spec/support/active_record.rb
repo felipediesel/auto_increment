@@ -12,3 +12,14 @@ ActiveRecord::Migration.create_table :users do |t|
   t.integer :account_id
   t.string :letter_code
 end
+
+# +ActiveRecord+ migration for Invoices
+ActiveRecord::Migration.create_table :invoices do |t|
+  t.string :reference
+  t.integer :user_id
+end
+
+# +ActiveRecord+ migration for Tickets
+ActiveRecord::Migration.create_table :tickets do |t|
+  t.string :serial
+end
