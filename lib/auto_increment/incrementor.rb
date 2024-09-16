@@ -4,30 +4,24 @@
 module AutoIncrement
   # +AutoIncrement::Incrementor+
   class Incrementor
-    def initialize(column = nil, options = {})
-      if column.is_a? Hash
-        options = column
-        column = nil
-      end
-
-      @column = column || options[:column] || :code
-      @options = options.reverse_merge initial: 1, force: false
-      @options[:scope] = [@options[:scope]].compact unless @options[:scope].is_a?(Array)
-      @options[:model_scope] = [@options[:model_scope]].compact unless @options[:model_scope].is_a?(Array)
+    def initialize(record, column = nil, **options)
+      @record = record
+      @column = column || options.fetch(:column, :code)
+      @initial = options.fetch(:initial, 1)
+      @force = options.fetch(:force, false)
+      @scope = Array.wrap(options[:scope]).compact
+      @model_scope = Array.wrap(options[:model_scope]).compact
+      @lock = options.fetch(:lock, false)
     end
 
-    def before_create(record)
-      @record = record
+    def run
       write if can_write?
     end
-
-    alias before_validation before_create
-    alias before_save before_create
 
     private
 
     def can_write?
-      @record.send(@column).blank? || @options[:force]
+      @record.send(@column).blank? || @force
     end
 
     def write
@@ -35,15 +29,15 @@ module AutoIncrement
     end
 
     def build_scopes(query)
-      @options[:scope].each do |scope|
-        query = query.where(scope => @record.send(scope)) if scope.present? && @record.respond_to?(scope)
+      @scope.each do |scope|
+        query = query.where(scope => @record.send(scope)) if @record.respond_to?(scope)
       end
 
       query
     end
 
     def build_model_scope(query)
-      @options[:model_scope].reject(&:nil?).each do |scope|
+      @model_scope.each do |scope|
         query = query.send(scope)
       end
 
@@ -64,17 +58,17 @@ module AutoIncrement
     end
 
     def lock?
-      @options[:lock] == true
+      @lock == true
     end
 
     def increment
       max = maximum
 
-      max.blank? ? @options[:initial] : max.next
+      max.blank? ? @initial : max.next
     end
 
     def string?
-      @options[:initial].instance_of?(String)
+      @initial.instance_of?(String)
     end
   end
 end

@@ -7,12 +7,10 @@ module AutoIncrement
     extend ActiveSupport::Concern
     # +AutoIncrement::ActiveRecord::ClassMethods+
     module ClassMethods
-      def auto_increment(column = nil, options = {})
-        options.reverse_merge! before: :create
-
-        callback = "before_#{options[:before]}"
-
-        send callback, Incrementor.new(column, options)
+      def auto_increment(column = nil, **options)
+        send("before_#{options.fetch(:before, :create)}") do |record|
+          Incrementor.new(record, column, **options).run
+        end
       end
     end
   end
