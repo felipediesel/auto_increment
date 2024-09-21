@@ -13,6 +13,10 @@ describe AutoIncrement::Incrementor do
     'AAAAA' => 'AAAAB'
   }.each do |previous_value, next_value|
     describe "increment value for #{previous_value}" do
+      subject do
+        AutoIncrement::Incrementor.new User.new
+      end
+
       it do
         allow(subject).to receive(:maximum) { previous_value }
         expect(subject.send(:increment)).to eq next_value
@@ -22,7 +26,7 @@ describe AutoIncrement::Incrementor do
 
   describe 'initial value of string' do
     subject do
-      AutoIncrement::Incrementor.new initial: 'A'
+      AutoIncrement::Incrementor.new User.new, initial: 'A'
     end
 
     it do
