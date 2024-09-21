@@ -3,3 +3,16 @@
 source 'https://rubygems.org'
 
 gemspec
+
+group :development do
+  gem 'appraisal'
+  gem 'bundler'
+  gem 'database_cleaner'
+  gem 'fuubar'
+  gem 'guard'
+  gem 'guard-rspec'
+  gem 'rake'
+  gem 'rspec'
+  gem 'rspec-nc'
+  gem 'rubocop'
+end

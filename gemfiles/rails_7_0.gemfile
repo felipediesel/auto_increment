@@ -2,7 +2,20 @@
 
 source "https://rubygems.org"
 
-gem "activerecord", "7.0.8"
-gem "activesupport", "7.0.8"
+gem "activerecord", "7.0.8.4"
+gem "activesupport", "7.0.8.4"
+
+group :development do
+  gem "appraisal"
+  gem "bundler"
+  gem "database_cleaner"
+  gem "fuubar"
+  gem "guard"
+  gem "guard-rspec"
+  gem "rake"
+  gem "rspec"
+  gem "rspec-nc"
+  gem "rubocop"
+end
 
 gemspec path: "../"

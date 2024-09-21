@@ -8,12 +8,12 @@ PATH
 GEM
   remote: https://rubygems.org/
   specs:
-    activemodel (7.0.8)
-      activesupport (= 7.0.8)
-    activerecord (7.0.8)
-      activemodel (= 7.0.8)
-      activesupport (= 7.0.8)
-    activesupport (7.0.8)
+    activemodel (7.0.8.4)
+      activesupport (= 7.0.8.4)
+    activerecord (7.0.8.4)
+      activemodel (= 7.0.8.4)
+      activesupport (= 7.0.8.4)
+    activesupport (7.0.8.4)
       concurrent-ruby (~> 1.0, >= 1.0.2)
       i18n (>= 1.6, < 2)
       minitest (>= 5.1)
@@ -24,7 +24,7 @@ GEM
       thor (>= 0.14.0)
     ast (2.4.2)
     coderay (1.1.3)
-    concurrent-ruby (1.2.3)
+    concurrent-ruby (1.3.4)
     database_cleaner (2.0.2)
       database_cleaner-active_record (>= 2, < 3)
     database_cleaner-active_record (2.1.0)
@@ -51,7 +51,7 @@ GEM
       guard (~> 2.1)
       guard-compat (~> 1.1)
       rspec (>= 2.99.0, < 4.0)
-    i18n (1.14.5)
+    i18n (1.14.6)
       concurrent-ruby (~> 1.0)
     json (2.7.2)
     language_server-protocol (3.17.0.3)
@@ -60,7 +60,8 @@ GEM
       rb-inotify (~> 0.9, >= 0.9.10)
     lumberjack (1.2.10)
     method_source (1.1.0)
-    minitest (5.23.0)
+    mini_portile2 (2.8.7)
+    minitest (5.25.1)
     nenv (0.3.0)
     notiffany (0.1.3)
       nenv (~> 0.1)
@@ -112,8 +113,8 @@ GEM
       parser (>= 3.3.1.0)
     ruby-progressbar (1.13.0)
     shellany (0.0.1)
-    sqlite3 (1.6.9-arm64-darwin)
-    sqlite3 (1.6.9-x86_64-linux)
+    sqlite3 (1.6.9)
+      mini_portile2 (~> 2.8.0)
     strscan (3.1.0)
     terminal-notifier (2.0.0)
     thor (1.3.1)
@@ -123,11 +124,12 @@ GEM
 
 PLATFORMS
   arm64-darwin-23
+  arm64-darwin-24
   x86_64-linux
 
 DEPENDENCIES
-  activerecord (= 7.0.8)
-  activesupport (= 7.0.8)
+  activerecord (= 7.0.8.4)
+  activesupport (= 7.0.8.4)
   appraisal
   auto_increment!
   bundler
