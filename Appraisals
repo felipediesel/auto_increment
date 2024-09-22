@@ -12,5 +12,8 @@ RAILS_VERSIONS.each do |name, version|
   appraise "rails_#{name}" do
     gem "activerecord", version
     gem "activesupport", version
+    group :development do
+      gem "standard" if name.start_with?("7")
+    end
   end
 end
