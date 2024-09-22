@@ -15,4 +15,5 @@ group :development do
   gem 'rspec'
   gem 'rspec-nc'
   gem 'rubocop'
+  gem 'sqlite3', '~> 1.6.9'
 end

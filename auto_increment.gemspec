@@ -20,18 +20,5 @@ Gem::Specification.new do |s|
   s.add_dependency 'activerecord', '>= 6.0'
   s.add_dependency 'activesupport', '>= 6.0'
 
-  # s.add_development_dependency 'bundler'
-  # s.add_development_dependency 'rake'
-
-  # s.add_development_dependency 'appraisal'
-  # s.add_development_dependency 'database_cleaner'
-  # s.add_development_dependency 'fuubar'
-  # s.add_development_dependency 'guard'
-  # s.add_development_dependency 'guard-rspec'
-  # s.add_development_dependency 'rspec'
-  # s.add_development_dependency 'rspec-nc'
-  # s.add_development_dependency 'rubocop'
-
-  s.add_development_dependency 'sqlite3', '~> 1.6.9'
   s.metadata['rubygems_mfa_required'] = 'true'
 end
