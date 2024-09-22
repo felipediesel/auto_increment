@@ -15,8 +15,8 @@ group :development do
   gem "rake"
   gem "rspec"
   gem "rspec-nc"
-  gem "rubocop"
   gem "sqlite3", "~> 1.6.9"
+  gem "standard"
 end
 
 gemspec path: "../"
