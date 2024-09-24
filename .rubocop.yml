@@ -1,44 +1,10 @@
-Gemspec/RequiredRubyVersion:
-  Enabled: false
+require:
+  - standard
+  - standard-custom
+  - standard-performance
+  - rubocop-performance
 
-Metrics/AbcSize:
-  Enabled: false
-
-Metrics/BlockLength:
-  Enabled: false
-
-Metrics/BlockNesting:
-  Enabled: false
-
-Metrics/ClassLength:
-  Enabled: false
-
-Metrics/CollectionLiteralLength:
-  Enabled: false
-
-Metrics/CyclomaticComplexity:
-  Enabled: false
-
-Metrics/MethodLength:
-  Enabled: false
-
-Metrics/ModuleLength:
-  Enabled: false
-
-Metrics/ParameterLists:
-  Enabled: false
-
-Metrics/PerceivedComplexity:
-  Enabled: false
-
-Style/StringLiterals:
-  Exclude:
-    - "gemfiles/*"
-
-Style/FrozenStringLiteralComment:
-  Exclude:
-    - "gemfiles/*"
-
-AllCops:
-  TargetRubyVersion: 3.2
-  NewCops: enable
+inherit_gem:
+  standard: config/base.yml
+  standard-custom: config/base.yml
+  standard-performance: config/base.yml

@@ -2,5 +2,5 @@
 
 # +AutoIncrement::VERSION+
 module AutoIncrement
-  VERSION = '1.6.2'
+  VERSION = "1.6.2"
 end

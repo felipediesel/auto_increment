@@ -1,16 +1,16 @@
 # frozen_string_literal: true
 
-require 'spec_helper'
+require "spec_helper"
 
 describe AutoIncrement::Incrementor do
   {
     nil => 1,
     0 => 1,
     1 => 2,
-    'A' => 'B',
-    'Z' => 'AA',
-    'AA' => 'AB',
-    'AAAAA' => 'AAAAB'
+    "A" => "B",
+    "Z" => "AA",
+    "AA" => "AB",
+    "AAAAA" => "AAAAB"
   }.each do |previous_value, next_value|
     describe "increment value for #{previous_value}" do
       subject do
@@ -24,14 +24,14 @@ describe AutoIncrement::Incrementor do
     end
   end
 
-  describe 'initial value of string' do
+  describe "initial value of string" do
     subject do
-      AutoIncrement::Incrementor.new User.new, initial: 'A'
+      AutoIncrement::Incrementor.new User.new, initial: "A"
     end
 
     it do
       allow(subject).to receive(:maximum) { nil }
-      expect(subject.send(:increment)).to eq 'A'
+      expect(subject.send(:increment)).to eq "A"
     end
   end
 end
