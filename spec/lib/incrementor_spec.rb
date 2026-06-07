@@ -79,6 +79,12 @@ describe AutoIncrement::Incrementor do
         AutoIncrement::Incrementor.new(account, force: true).run
         expect(account.code).to eq 11
       end
+
+      it "sets the initial value when force is true on an empty table" do
+        account = Account.new(code: 5)
+        AutoIncrement::Incrementor.new(account, force: true).run
+        expect(account.code).to eq 1
+      end
     end
 
     describe "scoped increment" do
@@ -88,6 +94,16 @@ describe AutoIncrement::Incrementor do
         account = Account.new(name: "mine")
         AutoIncrement::Incrementor.new(account, scope: :name).run
         expect(account.code).to eq 1
+      end
+    end
+
+    describe "model scope" do
+      it "bypasses default_scope to see all records" do
+        create_user(letter_code: "C", name: "Mark")
+
+        user = User.new
+        AutoIncrement::Incrementor.new(user, column: :letter_code, initial: "A", model_scope: :with_mark).run
+        expect(user.letter_code).to eq "D"
       end
     end
   end
