@@ -28,6 +28,13 @@ module AutoIncrement
       @record.send :write_attribute, @column, increment
     end
 
+    def maximum_query
+      query = build_scopes(build_model_scope(@record.class))
+      query = query.lock if lock?
+
+      query
+    end
+
     def build_scopes(query)
       @scope.each do |scope|
         query = query.where(scope => @record.send(scope)) if @record.respond_to?(scope)
@@ -45,8 +52,7 @@ module AutoIncrement
     end
 
     def maximum
-      query = build_scopes(build_model_scope(@record.class))
-      query.lock if lock?
+      query = maximum_query
 
       if string?
         query.select("#{@column} max")
