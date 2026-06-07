@@ -2,8 +2,8 @@
 
 source "https://rubygems.org"
 
-gem "activerecord", "7.1.4"
-gem "activesupport", "7.1.4"
+gem "activerecord", "7.1.6"
+gem "activesupport", "7.1.6"
 
 group :development do
   gem "appraisal"
@@ -15,7 +15,7 @@ group :development do
   gem "rake"
   gem "rspec"
   gem "rspec-nc"
-  gem "sqlite3", "~> 1.7.3"
+  gem "sqlite3", "~> 2.9.5"
   gem "standard"
 end
 
