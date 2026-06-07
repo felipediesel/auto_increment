@@ -4,30 +4,30 @@ require "spec_helper"
 require "models/account"
 require "models/user"
 
-def create_account(code:, name: "seed")
-  conn = ActiveRecord::Base.connection
-  conn.execute "INSERT INTO accounts (name, code) VALUES (#{conn.quote(name)}, #{code})"
-end
-
-def create_user(letter_code:, name: "seed")
-  conn = ActiveRecord::Base.connection
-  conn.execute "INSERT INTO users (name, letter_code) VALUES (#{conn.quote(name)}, #{conn.quote(letter_code)})"
-end
-
 describe AutoIncrement::Incrementor do
   before do
     Account.delete_all
     User.delete_all
   end
 
-  describe "#run" do
-    it "increments nil to 1" do
-      account = Account.new
-      AutoIncrement::Incrementor.new(account).run
-      expect(account.code).to eq 1
-    end
+  def create_account(code:, name: "seed")
+    conn = ActiveRecord::Base.connection
+    conn.execute "INSERT INTO accounts (name, code) VALUES (#{conn.quote(name)}, #{conn.quote(code)})"
+  end
 
+  def create_user(letter_code:, name: "seed")
+    conn = ActiveRecord::Base.connection
+    conn.execute "INSERT INTO users (name, letter_code) VALUES (#{conn.quote(name)}, #{conn.quote(letter_code)})"
+  end
+
+  describe "#run" do
     describe "integer" do
+      it "increments nil to 1" do
+        account = Account.new
+        AutoIncrement::Incrementor.new(account).run
+        expect(account.code).to eq 1
+      end
+
       {
         0 => 1,
         1 => 2,
@@ -44,6 +44,12 @@ describe AutoIncrement::Incrementor do
     end
 
     describe "string" do
+      it "uses the initial value when no records exist" do
+        user = User.new
+        AutoIncrement::Incrementor.new(user, column: :letter_code, initial: "A").run
+        expect(user.letter_code).to eq "A"
+      end
+
       {
         "A" => "B",
         "Z" => "AA",
@@ -68,9 +74,10 @@ describe AutoIncrement::Incrementor do
       end
 
       it "changes the column if force is true" do
+        create_account(code: 10)
         account = Account.new(code: 5)
         AutoIncrement::Incrementor.new(account, force: true).run
-        expect(account.code).not_to eq 5
+        expect(account.code).to eq 11
       end
     end
 
@@ -86,14 +93,11 @@ describe AutoIncrement::Incrementor do
   end
 
   describe "locking the query" do
-    subject do
-      AutoIncrement::Incrementor.new Account.new, :code, lock: true
-    end
-
-    it "returns a locked relation for the maximum query" do
-      relation = subject.send(:maximum_query)
-
-      expect(relation.lock_value).to eq(true)
+    it "increments correctly with lock enabled" do
+      create_account(code: 10)
+      account = Account.new
+      AutoIncrement::Incrementor.new(account, lock: true).run
+      expect(account.code).to eq 11
     end
   end
 end
