@@ -2,8 +2,8 @@ PATH
   remote: ..
   specs:
     auto_increment (1.6.2)
-      activerecord (>= 6.0)
-      activesupport (>= 6.0)
+      activerecord (>= 7.1)
+      activesupport (>= 7.1)
 
 GEM
   remote: https://rubygems.org/
@@ -46,6 +46,7 @@ GEM
     diff-lcs (1.6.2)
     drb (2.2.3)
     ffi (1.17.4-arm64-darwin)
+    ffi (1.17.4-x86_64-linux-gnu)
     formatador (1.2.3)
       reline
     fuubar (2.5.1)
@@ -142,6 +143,7 @@ GEM
     securerandom (0.4.1)
     shellany (0.0.1)
     sqlite3 (2.9.5-arm64-darwin)
+    sqlite3 (2.9.5-x86_64-linux-gnu)
     standard (1.54.0)
       language_server-protocol (~> 3.17.0.2)
       lint_roller (~> 1.0)
@@ -166,6 +168,7 @@ GEM
 
 PLATFORMS
   arm64-darwin-24
+  x86_64-linux
 
 DEPENDENCIES
   activerecord (= 8.1.3)

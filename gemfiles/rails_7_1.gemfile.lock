@@ -2,8 +2,8 @@ PATH
   remote: ..
   specs:
     auto_increment (1.6.2)
-      activerecord (>= 6.0)
-      activesupport (>= 6.0)
+      activerecord (>= 7.1)
+      activesupport (>= 7.1)
 
 GEM
   remote: https://rubygems.org/
@@ -168,7 +168,6 @@ GEM
     unicode-emoji (4.2.0)
 
 PLATFORMS
-  arm64-darwin-23
   arm64-darwin-24
   x86_64-linux
 
