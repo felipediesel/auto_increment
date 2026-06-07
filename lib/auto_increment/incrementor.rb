@@ -74,7 +74,12 @@ module AutoIncrement
     end
 
     def string?
-      @initial.instance_of?(String)
+      @initial.instance_of?(String) || column_string?
+    end
+
+    def column_string?
+      col = @record.class.columns_hash[@column.to_s]
+      col && col.type.in?(%i[string text])
     end
   end
 end

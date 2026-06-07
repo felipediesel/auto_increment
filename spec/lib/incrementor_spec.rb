@@ -62,6 +62,17 @@ describe AutoIncrement::Incrementor do
       end
     end
 
+    describe "string column in DB with integer initial" do
+      it "uses length-aware ordering, not SQL MAX" do
+        values = %w[1 2 3 4 5 6 7 8 9 10]
+        values.each { |v| create_user(code: v) }
+
+        user = User.new
+        AutoIncrement::Incrementor.new(user, column: :letter_code, initial: 1).run
+        expect(user.letter_code).to eq "11"
+      end
+    end
+
     context "when column value is already set" do
       it "does not change the column if force is false" do
         account = Account.new(code: 5)

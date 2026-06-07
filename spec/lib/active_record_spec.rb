@@ -3,6 +3,7 @@
 require "spec_helper"
 require "models/account"
 require "models/user"
+require "models/post"
 
 describe AutoIncrement do
   before :all do
@@ -72,5 +73,14 @@ describe AutoIncrement do
 
   describe "uses model scopes" do
     it { expect(@user3_account2.letter_code).to eq("C") }
+  end
+
+  describe "string column with integer initial" do
+    it "increments correctly past the 9-to-10 boundary" do
+      15.times do |i|
+        post = Post.create!
+        expect(post.ref.to_i).to eq(i + 1)
+      end
+    end
   end
 end
