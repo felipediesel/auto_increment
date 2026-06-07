@@ -22,14 +22,14 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        ruby: ["3.3", "3.4", "4.0"]
+        ruby: ["3.3.11", "3.4.9", "4.0.5"]
         gemfile: [rails_7_1, rails_7_2, rails_8_0, rails_8_1]
         exclude:
-          - ruby: "3.3"
+          - ruby: "3.3.11"
             gemfile: rails_8_0
-          - ruby: "3.3"
+          - ruby: "3.3.11"
             gemfile: rails_8_1
-          - ruby: "4.0"
+          - ruby: "4.0.5"
             gemfile: rails_7_1
     runs-on: ubuntu-latest
     env:
