@@ -2,7 +2,7 @@
 
 ![CI status](https://github.com/felipediesel/auto_increment/actions/workflows/ci.yml/badge.svg?branch=main)
 
-[![Code Climate](https://codeclimate.com/github/felipediesel/auto_increment/badges/gpa.svg)](https://codeclimate.com/github/felipediesel/auto_increment)
+[![Maintainability](https://qlty.sh/gh/felipediesel/projects/auto_increment/maintainability.svg)](https://qlty.sh/gh/felipediesel/projects/auto_increment)
 
 `auto_increment` automatically generates sequential values for Active Record attributes.
 
