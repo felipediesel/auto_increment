@@ -123,7 +123,7 @@ AB
 ...
 ```
 
-String sequences follow the same pattern as Excel columns.
+String sequences follow Ruby's [`String#next`](https://ruby-doc.org/3.4/Object.html#method-i-next) logic.
 
 ### Scoped Sequences
 
