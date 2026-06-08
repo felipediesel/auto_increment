@@ -79,7 +79,7 @@ module AutoIncrement
 
     def column_string?
       col = @record.class.columns_hash[@column.to_s]
-      col && col.type.in?(%i[string text])
+      col&.type&.in?(%i[string text])
     end
   end
 end
