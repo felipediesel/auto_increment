@@ -15,6 +15,11 @@ describe AutoIncrement do
     @user3_account2 = @account2.users.create name: "Robert"
   end
 
+  after :all do
+    Account.delete_all
+    User.delete_all
+  end
+
   describe "initial" do
     it { expect(@account1.code).to eq 1 }
     it { expect(@user1_account1.letter_code).to eq "A" }
