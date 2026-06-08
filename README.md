@@ -4,67 +4,285 @@
 
 [![Code Climate](https://codeclimate.com/github/felipediesel/auto_increment/badges/gpa.svg)](https://codeclimate.com/github/felipediesel/auto_increment)
 
-auto_increment provides automatic incrementation for a integer or string fields in Rails.
+`auto_increment` automatically generates sequential values for Active Record attributes.
+
+Common use cases:
+
+- Invoice numbers (`1`, `2`, `3`)
+- Customer numbers (`1000`, `1001`, `1002`)
+- Per-account sequences
+- Letter sequences (`A`, `B`, ..., `Z`, `AA`, `AB`)
+
+## Quick Start
+
+Without the gem:
+
+```rb
+class Invoice < ApplicationRecord
+  before_create :set_number
+
+  private
+
+  def set_number
+    self.number = Invoice.maximum(:number).to_i + 1
+  end
+end
+```
+
+With `auto_increment`:
+
+```rb
+class Invoice < ApplicationRecord
+  auto_increment :number
+end
+```
+
+```rb
+Invoice.create!.number #=> 1
+Invoice.create!.number #=> 2
+Invoice.create!.number #=> 3
+```
 
 ## Installation
 
-You can use auto_increment as a gem from Rails 7.1 and later.
-
-To use the gem version, put the following gem requirement in your `Gemfile`:
+Add the gem to your Gemfile:
 
 ```rb
 gem "auto_increment"
 ```
 
+Then run:
+
+```sh
+bundle install
+```
+
 ## Usage
 
-To work with a auto increment column you used to do something like this in your model:
+The target column must exist in your database.
 
 ```rb
-before_create :set_code
-def set_code
-  max_code = Operation.maximum(:code)
-  self.code = max_code.to_i + 1
+class Invoice < ApplicationRecord
+  auto_increment :number
 end
 ```
 
-Looks fine, but not when you need to do it over and over again. In fact auto_increment does it under the cover.
+### Integer Sequences
 
-All you need to do is this:
+```rb
+class Invoice < ApplicationRecord
+  auto_increment :number
+end
+```
+
+Generated values:
+
+```text
+1
+2
+3
+4
+...
+```
+
+### Custom Starting Value
+
+```rb
+class Invoice < ApplicationRecord
+  auto_increment :number, initial: 1000
+end
+```
+
+Generated values:
+
+```text
+1000
+1001
+1002
+...
+```
+
+### String Sequences
+
+```rb
+class User < ApplicationRecord
+  auto_increment :code, initial: "A"
+end
+```
+
+Generated values:
+
+```text
+A
+B
+C
+...
+Z
+AA
+AB
+...
+```
+
+String sequences follow the same pattern as Excel columns.
+
+### Scoped Sequences
+
+Generate independent sequences within a scope:
+
+```rb
+class Invoice < ApplicationRecord
+  auto_increment :number, scope: :account_id
+end
+```
+
+Result:
+
+```text
+Account 1: 1, 2, 3
+Account 2: 1, 2, 3
+```
+
+Multiple scopes are also supported:
+
+```rb
+class Invoice < ApplicationRecord
+  auto_increment :number,
+    scope: [:account_id, :year]
+end
+```
+
+Result:
+
+```text
+Account 1, 2026: 1, 2, 3
+Account 1, 2027: 1, 2, 3
+Account 2, 2026: 1, 2, 3
+```
+
+### Using Model Scopes
+
+`model_scope` applies one or more Active Record scopes before calculating the maximum value.
+
+This is useful when:
+
+- Bypassing a `default_scope`
+- Including archived records
+- Restricting the sequence to a subset of records
+
+```rb
+class User < ApplicationRecord
+  default_scope -> { where(active: true) }
+
+  scope :unscoped_all, -> { unscoped }
+
+  auto_increment :code,
+    scope: :account_id,
+    model_scope: :unscoped_all
+end
+```
+
+In this example, the sequence is calculated using all records, including inactive ones.
+
+### Callback Timing
+
+By default, values are assigned during `before_create`.
 
 ```rb
 auto_increment :code
 ```
 
-And your code field will be incremented
+You can change when the value is generated:
 
-## Customizing
+| Option        | Callback            |
+| ------------- | ------------------- |
+| `:create`     | `before_create`     |
+| `:save`       | `before_save`       |
+| `:validation` | `before_validation` |
 
-So you have a different column or need a scope. auto_increment provides options. You can use it like this:
+Example:
 
 ```rb
-auto_increment :letter, scope: [:account_id, :job_id], model_scope: :in_account, initial: 'C', force: true, lock: false, before: :create
+class Account < ApplicationRecord
+  auto_increment :code, before: :validation
+
+  validates :code, presence: true
+end
 ```
 
-First argument is the column that will be incremented. Can be integer or string.
+### Overwriting Existing Values
 
-- scope: you can define columns that will be scoped and you can use as many as you want (default: nil)
-- model_scope: you can define model scopes that will be executed and you can use as many as you want (default: nil)
-- initial: initial value of column (default: 1)
-- force: you can set a value before create and auto_increment will not change that, but if you do want this, set force to true (default: false)
-- lock: you can set a lock on the max query. (default: false)
-- before: you can choose a different callback to be used (:create, :save, :validation) (default: create)
+By default, manually assigned values are preserved.
+
+```rb
+invoice.number = 500
+invoice.save
+```
+
+To always generate a new value:
+
+```rb
+auto_increment :number, force: true
+```
+
+### Concurrency
+
+For applications that may create records concurrently, enable locking:
+
+```rb
+auto_increment :number, lock: true
+```
+
+This locks the record used to determine the next value before assigning it.
+
+## Options
+
+```rb
+auto_increment :number,
+  scope: [:account_id, :year],
+  model_scope: :unscoped_all,
+  initial: 1000,
+  force: true,
+  lock: true,
+  before: :validation
+```
+
+| Option        | Description                                                        | Default   |
+| ------------- | ------------------------------------------------------------------ | --------- |
+| `column`      | Column to increment. Can be integer or string.                     | `:code`   |
+| `initial`     | Starting value. Integer or string.                                 | `1`       |
+| `scope`       | Restricts the sequence to matching column values.                  | `nil`     |
+| `model_scope` | Applies Active Record scopes before calculating the maximum value. | `nil`     |
+| `force`       | Overwrites an already assigned value.                              | `false`   |
+| `lock`        | Enables locking when calculating the next value.                   | `false`   |
+| `before`      | Callback timing (`:create`, `:save`, `:validation`).               | `:create` |
+
+## How It Works
+
+When a record is created, `auto_increment`:
+
+1. Builds a query for the target column.
+2. Applies any configured scopes.
+3. Applies any configured model scopes.
+4. Finds the current maximum value.
+5. Calculates the next value.
+6. Assigns the value during the configured callback.
+
+The generated value is stored in a normal database column and can be queried, indexed, and validated like any other attribute.
 
 ## Compatibility
 
-| Ruby | Rails |
-|------|-------|
-| 3.3  | 7.1, 7.2 |
+| Ruby | Rails              |
+| ---- | ------------------ |
+| 3.3  | 7.1, 7.2           |
 | 3.4  | 7.1, 7.2, 8.0, 8.1 |
-| 4.0  | 7.2, 8.0, 8.1 |
+| 4.0  | 7.2, 8.0, 8.1      |
 
-For older versions, use version 1.5.2.
+For older Ruby and Rails versions, use:
+
+```rb
+gem "auto_increment", "1.5.2"
+```
 
 ## License
 
-[MIT License](LICENSE.txt)
+Released under the MIT License. See [LICENSE.txt](LICENSE.txt).
