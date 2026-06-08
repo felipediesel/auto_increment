@@ -12,7 +12,7 @@ Gem::Specification.new do |s|
   s.email = ["diesel@hey.com"]
   s.homepage = "http://github.com/felipediesel/auto_increment"
   s.summary = "Auto increment a string or integer column"
-  s.description = "Automaticaly increments an ActiveRecord column"
+  s.description = "Automatically increments an ActiveRecord column"
 
   s.files = `git ls-files`.split("\n")
   s.require_paths = ["lib"]
