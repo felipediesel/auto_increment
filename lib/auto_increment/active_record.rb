@@ -21,7 +21,12 @@ module AutoIncrement
       private
 
       def auto_increment_deprecate_type_mismatch(column, initial)
-        col = columns_hash[column.to_s]
+        col = begin
+          columns_hash[column.to_s]
+        rescue ActiveRecord::ConnectionNotEstablished, ActiveRecord::NoDatabaseError
+          # Ignore connection/schema errors during class loading
+          return
+        end
         return unless col
 
         col_type = col.type
@@ -35,8 +40,6 @@ module AutoIncrement
           "the column type (#{col_type}) for column '#{column}' on #{model_name}. " \
           "This behavior is deprecated and will raise an error in the future."
         )
-      rescue ActiveRecord::ConnectionNotEstablished, ActiveRecord::NoDatabaseError
-        # Ignore connection/schema errors during class loading
       end
     end
   end
