@@ -17,7 +17,7 @@ describe AutoIncrement::Incrementor do
   end
 
   describe "#run" do
-    describe "integer" do
+    describe "integer column" do
       it "sets initial value to 1 when no records exist" do
         account = Account.new
         AutoIncrement::Incrementor.new(account).run
@@ -39,8 +39,8 @@ describe AutoIncrement::Incrementor do
       end
     end
 
-    describe "string" do
-      it "uses the initial value when no records exist" do
+    describe "string column" do
+      it "sets initial value when no records exist" do
         user = User.new
         AutoIncrement::Incrementor.new(user, column: :letter_code, initial: "A").run
         expect(user.letter_code).to eq "A"
@@ -60,12 +60,9 @@ describe AutoIncrement::Incrementor do
           expect(user.letter_code).to eq next_value
         end
       end
-    end
 
-    describe "string column in DB with integer initial" do
-      it "uses length-aware ordering, not SQL MAX" do
-        values = %w[1 2 3 4 5 6 7 8 9 10]
-        values.each { |v| create_user(code: v) }
+      it "uses length-aware ordering inferred from the column schema" do
+        %w[1 2 3 4 5 6 7 8 9 10].each { |v| create_user(code: v) }
 
         user = User.new
         AutoIncrement::Incrementor.new(user, column: :letter_code, initial: 1).run
@@ -73,14 +70,14 @@ describe AutoIncrement::Incrementor do
       end
     end
 
-    context "when column value is already set" do
-      it "does not change the column if force is false" do
+    describe "force" do
+      it "does not overwrite an existing value when force is false" do
         account = Account.new(code: 5)
         expect { AutoIncrement::Incrementor.new(account).run }
           .not_to change { account.code }
       end
 
-      it "changes the column if force is true" do
+      it "overwrites an existing value when force is true" do
         create_account(code: 10)
         account = Account.new(code: 5)
         AutoIncrement::Incrementor.new(account, force: true).run
@@ -94,7 +91,7 @@ describe AutoIncrement::Incrementor do
       end
     end
 
-    context "scoped increment" do
+    describe "scope" do
       it "only considers records within the same scope" do
         create_account(code: 10, name: "other")
 
@@ -112,38 +109,36 @@ describe AutoIncrement::Incrementor do
         AutoIncrement::Incrementor.new(user, column: :letter_code, initial: "A", model_scope: :with_mark).run
         expect(user.letter_code).to eq "D"
       end
+
+      it "applies model scopes when building the query" do
+        create_user(code: "C", name: "Mark")
+        create_user(code: "A", name: "Other")
+
+        user = User.new(name: "Mark")
+        AutoIncrement::Incrementor.new(user, column: :letter_code, initial: "A", model_scope: :with_mark).run
+        expect(user.letter_code).to eq "D"
+      end
+
+      it "only considers records matching the model scope" do
+        create_account(code: 10, name: "Mark")
+        create_account(code: 5, name: "Other")
+        account = Account.new(name: "Mark")
+        AutoIncrement::Incrementor.new(account, column: :code, initial: 1, model_scope: :only_mark).run
+        expect(account.code).to eq 11
+      end
     end
-  end
 
-  describe "model_scope option" do
-    it "applies model scopes when building the query" do
-      create_user(code: "C", name: "Mark")
-      create_user(code: "A", name: "Other")
+    describe "lock" do
+      it "increments correctly with lock enabled" do
+        create_account(code: 10)
+        account = Account.new
+        incrementor = AutoIncrement::Incrementor.new(account, lock: true)
 
-      user = User.new(name: "Mark")
-      AutoIncrement::Incrementor.new(user, column: :letter_code, initial: "A", model_scope: :with_mark).run
-      expect(user.letter_code).to eq "D"
-    end
+        expect(incrementor.send(:maximum_query).lock_value).to eq true
 
-    it "only considers records matching the model scope for integer columns" do
-      create_account(code: 10, name: "Mark")
-      create_account(code: 5, name: "Other")
-      account = Account.new(name: "Mark")
-      AutoIncrement::Incrementor.new(account, column: :code, initial: 1, model_scope: :only_mark).run
-      expect(account.code).to eq 11
-    end
-  end
-
-  describe "locking the query" do
-    it "increments correctly with lock enabled" do
-      create_account(code: 10)
-      account = Account.new
-      incrementor = AutoIncrement::Incrementor.new(account, lock: true)
-
-      expect(incrementor.send(:maximum_query).lock_value).to eq true
-
-      incrementor.run
-      expect(account.code).to eq 11
+        incrementor.run
+        expect(account.code).to eq 11
+      end
     end
   end
 end

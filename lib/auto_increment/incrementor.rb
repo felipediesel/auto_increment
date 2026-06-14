@@ -74,7 +74,7 @@ module AutoIncrement
     end
 
     def string?
-      @initial.instance_of?(String) || column_string?
+      column_string?
     end
 
     def column_string?
