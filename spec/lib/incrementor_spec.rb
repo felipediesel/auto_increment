@@ -3,6 +3,7 @@
 require "spec_helper"
 require "models/account"
 require "models/user"
+require "models/post"
 
 describe AutoIncrement::Incrementor do
   def create_account(code:, name: "seed")
@@ -18,7 +19,7 @@ describe AutoIncrement::Incrementor do
 
   describe "#run" do
     describe "integer column" do
-      it "sets initial value to 1 when no records exist" do
+      it "auto-detects initial value 1 when no initial is given" do
         account = Account.new
         AutoIncrement::Incrementor.new(account).run
         expect(account.code).to eq 1
@@ -44,6 +45,12 @@ describe AutoIncrement::Incrementor do
         user = User.new
         AutoIncrement::Incrementor.new(user, column: :letter_code, initial: "A").run
         expect(user.letter_code).to eq "A"
+      end
+
+      it "auto-detects initial value '1' when no initial is given" do
+        post = Post.new
+        AutoIncrement::Incrementor.new(post, column: :ref).run
+        expect(post.ref).to eq "1"
       end
 
       {

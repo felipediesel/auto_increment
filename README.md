@@ -125,6 +125,8 @@ AB
 
 String sequences follow Ruby's [`String#next`](https://ruby-doc.org/3.4/Object.html#method-i-next) logic. The column type is inferred from the database schema.
 
+> **Deprecation**: Explicitly passing an initial value whose type differs from the database column type is deprecated. For example, `auto_increment :ref, initial: 1` on a `string` column will emit a warning. When `initial` is not set, the default is automatically inferred from the column type (`"1"` for string columns, `1` for integer columns).
+
 ### Scoped Sequences
 
 Generate independent sequences within a scope:
@@ -249,7 +251,7 @@ auto_increment :number,
 | Option        | Description                                                        | Default   |
 | ------------- | ------------------------------------------------------------------ | --------- |
 | `column`      | Column to increment. Can be integer or string.                     | `:code`   |
-| `initial`     | Starting value. Inferred from the database column type.            | `1`       |
+| `initial`     | Starting value. Must match the database column type (`Integer` for integer columns, `String` for string columns). | `1`       |
 | `scope`       | Restricts the sequence to matching column values.                  | `nil`     |
 | `model_scope` | Applies Active Record scopes before calculating the maximum value. | `nil`     |
 | `force`       | Overwrites an already assigned value.                              | `false`   |

@@ -120,5 +120,14 @@ describe AutoIncrement do
         end
       }.not_to output(/\[DEPRECATION\]/).to_stderr
     end
+
+    it "does not warn when initial is omitted on a string column (auto-detects)" do
+      expect {
+        Class.new(ActiveRecord::Base) do
+          self.table_name = "posts"
+          auto_increment :ref
+        end
+      }.not_to output(/\[DEPRECATION\]/).to_stderr
+    end
   end
 end
