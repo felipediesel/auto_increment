@@ -28,11 +28,15 @@ module AutoIncrement
         return if col_type == :integer && initial.is_a?(Integer)
         return if col_type.in?(%i[string text]) && initial.is_a?(String)
 
+        model_name = name.presence || "anonymous"
+
         warn(
           "[DEPRECATION] The initial value type (#{initial.class}) does not match " \
-          "the column type (#{col_type}) for column '#{column}' on #{name}. " \
+          "the column type (#{col_type}) for column '#{column}' on #{model_name}. " \
           "This behavior is deprecated and will raise an error in the future."
         )
+      rescue ActiveRecord::ConnectionNotEstablished, ActiveRecord::NoDatabaseError
+        # Ignore connection/schema errors during class loading
       end
     end
   end

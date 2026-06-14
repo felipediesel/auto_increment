@@ -55,8 +55,9 @@ module AutoIncrement
       query = maximum_query
 
       if column_string?
-        query.select("#{@column} max")
-          .order(Arel.sql("LENGTH(#{@column}) DESC, #{@column} DESC"))
+        quoted_column = @record.class.connection.quote_column_name(@column)
+        query.select("#{quoted_column} max")
+          .order(Arel.sql("LENGTH(#{quoted_column}) DESC, #{quoted_column} DESC"))
           .first.try :max
       else
         query.maximum @column
