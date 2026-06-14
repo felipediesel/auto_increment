@@ -123,7 +123,7 @@ AB
 ...
 ```
 
-String sequences follow Ruby's [`String#next`](https://ruby-doc.org/3.4/Object.html#method-i-next) logic.
+String sequences follow Ruby's [`String#next`](https://ruby-doc.org/3.4/Object.html#method-i-next) logic. The column type is inferred from the database schema.
 
 ### Scoped Sequences
 
@@ -249,7 +249,7 @@ auto_increment :number,
 | Option        | Description                                                        | Default   |
 | ------------- | ------------------------------------------------------------------ | --------- |
 | `column`      | Column to increment. Can be integer or string.                     | `:code`   |
-| `initial`     | Starting value. Integer or string.                                 | `1`       |
+| `initial`     | Starting value. Inferred from the database column type.            | `1`       |
 | `scope`       | Restricts the sequence to matching column values.                  | `nil`     |
 | `model_scope` | Applies Active Record scopes before calculating the maximum value. | `nil`     |
 | `force`       | Overwrites an already assigned value.                              | `false`   |
