@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       checks: write
-      contents: write
+      contents: read
     steps:
       - name: Standard Ruby
         uses: standardrb/standard-ruby-action@eecb3f730879f5b8830705348c2961e5aa26de78 # v1.5.0
@@ -32,6 +32,8 @@ jobs:
           - ruby: "4.0.5"
             gemfile: rails_7_1
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     env:
       BUNDLE_GEMFILE: ${{ github.workspace }}/gemfiles/${{ matrix.gemfile }}.gemfile
     steps:
