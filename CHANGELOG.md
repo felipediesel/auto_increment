@@ -1,5 +1,28 @@
 # Changelog
 
+## [1.7.0] - 2026-06-28
+
+### Added
+
+- Thread safety via `lock:` option, acquires a DB row lock when computing the next value
+- Automatic type-aware default for `initial`, inferred from the database column type (`"1"` for string/text, `1` for integer)
+- Deprecation warning when `initial` type doesn't match the database column type
+
+### Fixed
+
+- Locked relation chaining with scopes (`lock: true` no longer breaks query chaining)
+- String columns with integer `initial` now auto-detect column type and default correctly
+
+### Changed
+
+- Incrementor API rewritten: `Incrementor.new(record, column, **options)` replaces the old positional hash
+- Callback dispatch moved into `ActiveRecord::ClassMethods#auto_increment`
+- Upgraded CI to GitHub Actions with scheduled workflow
+- Added StandardRB (Ruby linting)
+- Support for Ruby 3.3.5, 3.4.x, 4.0.x and Rails 7.1, 7.2, 8.0, 8.1
+- Tests rewritten to verify behavior through the public API
+- Bumped development dependencies (rexml, concurrent-ruby)
+
 ## [1.6.2] - 2024-05-18
 
 ### Fixed
