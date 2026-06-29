@@ -3,6 +3,7 @@
 require "spec_helper"
 require "models/account"
 require "models/user"
+require "models/post"
 
 describe AutoIncrement do
   before :all do
@@ -72,5 +73,61 @@ describe AutoIncrement do
 
   describe "uses model scopes" do
     it { expect(@user3_account2.letter_code).to eq("C") }
+  end
+
+  describe "string column with integer initial" do
+    it "increments correctly past the 9-to-10 boundary" do
+      15.times do |i|
+        post = Post.create!
+        expect(post.ref.to_i).to eq(i + 1)
+      end
+    end
+  end
+
+  describe "deprecation warning" do
+    it "warns when initial is a string on an integer column" do
+      expect {
+        Class.new(ActiveRecord::Base) do
+          self.table_name = "accounts"
+          auto_increment :code, initial: "A"
+        end
+      }.to output(/\[DEPRECATION\] The initial value type \(String\) does not match the column type \(integer\) for column 'code'.*raise an error in the future/).to_stderr
+    end
+
+    it "warns when initial is an integer on a string column" do
+      expect {
+        Class.new(ActiveRecord::Base) do
+          self.table_name = "posts"
+          auto_increment :ref, initial: 1
+        end
+      }.to output(/\[DEPRECATION\] The initial value type \(Integer\) does not match the column type \(string\) for column 'ref'.*raise an error in the future/).to_stderr
+    end
+
+    it "does not warn when types match (integer column, integer initial)" do
+      expect {
+        Class.new(ActiveRecord::Base) do
+          self.table_name = "accounts"
+          auto_increment :code, initial: 100
+        end
+      }.not_to output(/\[DEPRECATION\]/).to_stderr
+    end
+
+    it "does not warn when types match (string column, string initial)" do
+      expect {
+        Class.new(ActiveRecord::Base) do
+          self.table_name = "posts"
+          auto_increment :ref, initial: "X"
+        end
+      }.not_to output(/\[DEPRECATION\]/).to_stderr
+    end
+
+    it "does not warn when initial is omitted on a string column (auto-detects)" do
+      expect {
+        Class.new(ActiveRecord::Base) do
+          self.table_name = "posts"
+          auto_increment :ref
+        end
+      }.not_to output(/\[DEPRECATION\]/).to_stderr
+    end
   end
 end

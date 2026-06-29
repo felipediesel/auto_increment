@@ -12,3 +12,8 @@ ActiveRecord::Migration.create_table :users do |t|
   t.integer :account_id
   t.string :letter_code
 end
+
+# +ActiveRecord+ migration for Posts (string column, integer initial)
+ActiveRecord::Migration.create_table :posts do |t|
+  t.string :ref
+end

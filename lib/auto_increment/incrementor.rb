@@ -7,7 +7,7 @@ module AutoIncrement
     def initialize(record, column = nil, **options)
       @record = record
       @column = column || options.fetch(:column, :code)
-      @initial = options.fetch(:initial, 1)
+      @initial = resolve_initial(options)
       @force = options.fetch(:force, false)
       @scope = Array.wrap(options[:scope]).compact
       @model_scope = Array.wrap(options[:model_scope]).compact
@@ -54,9 +54,10 @@ module AutoIncrement
     def maximum
       query = maximum_query
 
-      if string?
-        query.select("#{@column} max")
-          .order(Arel.sql("LENGTH(#{@column}) DESC, #{@column} DESC"))
+      if column_string?
+        quoted_column = @record.class.connection.quote_column_name(@column)
+        query.select("#{quoted_column} max")
+          .order(Arel.sql("LENGTH(#{quoted_column}) DESC, #{quoted_column} DESC"))
           .first.try :max
       else
         query.maximum @column
@@ -73,8 +74,15 @@ module AutoIncrement
       max.blank? ? @initial : max.next
     end
 
-    def string?
-      @initial.instance_of?(String)
+    def resolve_initial(options)
+      return options[:initial] if options.key?(:initial)
+
+      column_string? ? "1" : 1
+    end
+
+    def column_string?
+      col = @record.class.columns_hash[@column.to_s]
+      col&.type&.in?(%i[string text])
     end
   end
 end
