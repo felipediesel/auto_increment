@@ -14,6 +14,6 @@ group :development do
   gem "rake"
   gem "rspec"
   gem "rspec-nc"
-  gem "sqlite3", "~> 2.9.5"
+  gem "sqlite3", "~> 2.9.6"
   gem "standard"
 end
