@@ -213,7 +213,7 @@ end
 
 ### Overwriting Existing Values
 
-By default, manually assigned values are preserved.
+By default, manually assigned nonblank values are preserved. Blank values (as defined by Active Support, including `nil`, `false`, `0`, and `""`) are treated as unset and will be generated.
 
 ```rb
 invoice.number = 500
@@ -228,13 +228,13 @@ auto_increment :number, force: true
 
 ### Concurrency
 
-For applications that may create records concurrently, enable locking:
+To request a database row lock while calculating the next value, enable locking:
 
 ```rb
 auto_increment :number, lock: true
 ```
 
-This locks the record used to determine the next value before assigning it.
+The lock is applied to the query used to find the current maximum. Its behavior depends on the database adapter and query; this option does not guarantee unique values under concurrent inserts. Add a unique database index on the generated column (or on the generated column together with its scope columns) to enforce uniqueness.
 
 ## Options
 
@@ -251,7 +251,7 @@ auto_increment :number,
 | Option        | Description                                                        | Default   |
 | ------------- | ------------------------------------------------------------------ | --------- |
 | `column`      | Column to increment. Can be integer or string.                     | `:code`   |
-| `initial`     | Starting value. Must match the database column type (`Integer` for integer columns, `String` for string columns). When omitted, inferred from the column type. | `1` or `"1"` (inferred) |
+| `initial`     | Starting value. Should match the database column type (`Integer` for integer columns, `String` for string columns); a mismatch is deprecated. When omitted, inferred from the column type. | `1` or `"1"` (inferred) |
 | `scope`       | Restricts the sequence to matching column values.                  | `nil`     |
 | `model_scope` | Applies Active Record scopes before calculating the maximum value. | `nil`     |
 | `force`       | Overwrites an already assigned value.                              | `false`   |
@@ -279,11 +279,7 @@ The generated value is stored in a normal database column and can be queried, in
 | 3.4  | 7.1, 7.2, 8.0, 8.1 |
 | 4.0  | 7.2, 8.0, 8.1      |
 
-For older Ruby and Rails versions, use:
-
-```rb
-gem "auto_increment", "1.5.2"
-```
+This release supports Rails 7.1 and newer. The older 1.6.2 release supports Rails 6.1 and 7.0; for earlier Rails versions, see the [changelog](CHANGELOG.md) for the releases that added support.
 
 ## License
 

@@ -4,7 +4,7 @@
 
 ### Added
 
-- Thread safety via `lock:` option, acquires a DB row lock when computing the next value
+- Added `lock:` option to request a database row lock when computing the next value (behavior depends on the database adapter and query; this does not guarantee uniqueness under concurrent inserts)
 - Automatic type-aware default for `initial`, inferred from the database column type (`"1"` for string/text, `1` for integer)
 - Deprecation warning when `initial` type doesn't match the database column type
 
@@ -43,7 +43,7 @@
 
 ### Deprecated
 
-- `scope:` parameter is deprecated in favor of `model_scope:`
+- Deprecated the legacy `scope:` option for applying model scopes, in favor of `model_scope:`. The current `scope:` option filters sequence values by matching record attributes.
 
 ### Changed
 
