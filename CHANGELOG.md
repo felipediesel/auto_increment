@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.7.1] - 2026-11-11
+
+### Changed
+
+- Updated supported Ruby versions to 3.3.13, 3.4.12, and 4.0.9
+- Refreshed development dependencies and CI setup
+- Clarified gem metadata, compatibility guidance, blank value handling, and the limits of database row locking
+
 ## [1.7.0] - 2026-06-28
 
 ### Added
