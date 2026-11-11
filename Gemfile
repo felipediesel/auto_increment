@@ -6,14 +6,12 @@ gemspec
 
 group :development do
   gem "appraisal"
-  gem "bundler"
   gem "database_cleaner"
   gem "fuubar"
   gem "guard"
   gem "guard-rspec"
   gem "rake"
   gem "rspec"
-  gem "rspec-nc"
-  gem "sqlite3", "~> 2.9.6"
+  gem "sqlite3", "~> 2.10.2"
   gem "standard"
 end
