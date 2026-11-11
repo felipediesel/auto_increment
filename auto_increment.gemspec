@@ -9,10 +9,11 @@ Gem::Specification.new do |s|
   s.licenses = "MIT"
   s.platform = Gem::Platform::RUBY
   s.authors = ["Felipe Diesel"]
-  s.email = ["diesel@hey.com"]
-  s.homepage = "http://github.com/felipediesel/auto_increment"
+  s.email = ["felipediesel@gmail.com"]
+  s.homepage = "https://github.com/felipediesel/auto_increment"
   s.summary = "Auto increment a string or integer column"
-  s.description = "Automatically increments an ActiveRecord column"
+  s.description = "Automatically generates sequential values for string or integer Active Record columns."
+  s.metadata["source_code_uri"] = "https://github.com/felipediesel/auto_increment"
 
   s.files = `git ls-files`.split("\n")
   s.require_paths = ["lib"]
